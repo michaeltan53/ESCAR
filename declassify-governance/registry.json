@@ -1,1 +1,61 @@
-
+{
+  "schema_version": "1.0",
+  "comment": "Out-of-band declassifier registry (paper §3.2). Frozen at deployment time; only the platform security admin can register new entries. The Planner (LLM) has invocation rights only.",
+  "policies": [
+    {
+      "name": "declassify_bucket",
+      "purpose": "alert",
+      "input_label_in":  "H",
+      "output_label_out": "BOT",
+      "transform": "discretise numeric value into named bucket",
+      "params_schema": {
+        "value": "number",
+        "bins":  "list<number>"
+      },
+      "review": {
+        "approver": "security-admin@example.com",
+        "approval_date": "2026-04-15",
+        "ticket": "ESCAR-DECL-001"
+      },
+      "use_count_per_month": 412
+    },
+    {
+      "name": "declassify_hash",
+      "purpose": "audit",
+      "input_label_in":  "H",
+      "output_label_out": "BOT",
+      "transform": "salted SHA-256 truncated to 16 hex chars",
+      "params_schema": {
+        "value": "any"
+      },
+      "review": {
+        "approver": "security-admin@example.com",
+        "approval_date": "2026-04-15",
+        "ticket": "ESCAR-DECL-002"
+      },
+      "use_count_per_month": 188
+    },
+    {
+      "name": "declassify_redact",
+      "purpose": "logging",
+      "input_label_in":  "H",
+      "output_label_out": "BOT",
+      "transform": "keep first N characters; star out rest",
+      "params_schema": {
+        "value": "string",
+        "keep":  "int"
+      },
+      "review": {
+        "approver": "security-admin@example.com",
+        "approval_date": "2026-04-15",
+        "ticket": "ESCAR-DECL-003"
+      },
+      "use_count_per_month": 73
+    }
+  ],
+  "stats": {
+    "total_use_events_per_month": 673,
+    "single_policy_reuse_rate": 0.71,
+    "scenarios_covered": 8
+  }
+}
